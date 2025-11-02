@@ -39,9 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    "userauths",
     'core',
-    'userauths'
 ]
 
 MIDDLEWARE = [
@@ -141,4 +140,4 @@ JAZZMIN_SETTINGS = {
     "copyright": "irisoul-shop.com"
 }
 
-AUTH_USER_MODEL = 'userauths.models'
+AUTH_USER_MODEL = "userauths.User"
