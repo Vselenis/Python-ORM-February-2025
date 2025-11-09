@@ -8,7 +8,7 @@ django.setup()
 # Import your models
 from main_app.models import Author, Book, Review
 all = Author.objects.all()
-x = 1
+
 # Create and check models
 # def add_records_to_database():
 #     authors = [
@@ -111,3 +111,35 @@ def filter_authors_by_nationalities(nationality):
 # print("Authors with no nationalities:")
 # print(filter_authors_by_nationalities(None))
 
+def filter_authors_by_birth_year(start_year, end_year):
+    result = []
+    authors = Author.objects.filter(birth_date__year__range=(start_year, end_year)).order_by("birth_date")
+    for author in authors:
+        result.append(f"{author.birth_date}: {author.first_name} {author.last_name}")
+
+    return "\n".join(result)
+
+# print("Authors born between 1980 and 2000:")
+# print(filter_authors_by_birth_year(1980, 2000))
+# print()
+# print("Authors born between 1950 and 1960:")
+# print(filter_authors_by_birth_year(1950, 1960))
+# print()
+# print("Authors born between 2000 and 2010:")
+# print(filter_authors_by_birth_year(2000, 2010))
+
+
+def change_reviewer_name(old_name, new_name):
+    Review.objects.filter(reviewer_name=old_name).update(reviewer_name=new_name)
+    return Review.objects.all()
+
+
+
+# print("Change Alice Johnson to A.J.:")
+# print(change_reviewer_name("Alice Johnson", "A.J."))
+# print()
+# print("Change Bob Wilson to Bobby W.:")
+# print(change_reviewer_name("Bob Wilson", "Bobby W."))
+# print()
+# print("Change A.J. to A. Johnson:")
+# print(change_reviewer_name("A.J.", "A. Johnson"))
