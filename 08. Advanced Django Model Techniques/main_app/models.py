@@ -1,6 +1,9 @@
 from django.core.validators import MinValueValidator, MaxLengthValidator
 from django.db import models
 
+from main_app.validators import validate_manu_categories
+
+
 class Restaurant(models.Model):
     name = models.CharField(
         max_length=100,
@@ -34,4 +37,31 @@ class Restaurant(models.Model):
 
 
 class Menu(models.Model):
-    
+    name = models.CharField(
+        max_length=100
+    )
+    description = models.TextField(
+        validators=[validate_manu_categories]
+    )
+    restaurants = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+
+
+class RestaurantReview(models.Model):
+    reviewer_name = models.CharField(max_length=100)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    review_content = models.TextField()
+    rating = models.PositiveIntegerField(validators=[MaxLengthValidator(5)])
+
+    class Meta:
+        abstract = True
+        ordering = ['-rating']
+        verbose_name = 'Restaurant Review'
+        verbose_name_plural = 'Restaurant Reviews'
+        unique_together = ['reviewer_name', 'restaurant']
+
+
+class RegularRestaurantReview(RestaurantReview):
+    pass
+
+class FoodCriticRestaurantReview(RestaurantReview):
+    food_critic_cuisine_area = models.CharField
